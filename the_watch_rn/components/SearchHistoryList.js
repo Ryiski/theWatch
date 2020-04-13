@@ -9,7 +9,7 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export default ({state, text, index, setHistory, searchButtonRef}) => {
+export default ({state, text, index, setHistory, onSearch}) => {
   return (
     <Fragment>
       <View
@@ -20,7 +20,7 @@ export default ({state, text, index, setHistory, searchButtonRef}) => {
         <TouchableWithoutFeedback
           onPress={() => {
             state.change({search: text});
-            searchButtonRef.current.touchableHandlePress();
+            onSearch();
           }}>
           <Text
             style={{

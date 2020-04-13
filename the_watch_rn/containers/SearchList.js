@@ -18,7 +18,7 @@ const getSearchHistory = async () => {
   return value !== null ? JSON.parse(value) : [];
 };
 
-export default (SearchList = ({state, fontSize, searchButtonRef}) => {
+export default ({state, fontSize, onSearch}) => {
   const navigation = useNavigation();
 
   const [history, setHistory] = useState([]);
@@ -31,6 +31,7 @@ export default (SearchList = ({state, fontSize, searchButtonRef}) => {
       {!state.loading && state.movies.length > 0 && state.search != '' ? (
         state.movies.length > 0 ? (
           <FlatList
+            keyboardShouldPersistTaps="handled"
             data={state.movies.slice(0, 5)}
             contentContainerStyle={{}}
             keyExtractor={item => `${item.id}`}
@@ -80,7 +81,7 @@ export default (SearchList = ({state, fontSize, searchButtonRef}) => {
       ) : (
         <View style={{flex: 1, justifyContent: 'center'}}>
           {state.loading ? (
-            <Loading size={20} />
+            <Loading size={100} />
           ) : (
             <View
               style={{
@@ -89,7 +90,7 @@ export default (SearchList = ({state, fontSize, searchButtonRef}) => {
               {history.map((searched, i) => (
                 <SearchHistoryList
                   text={searched}
-                  searchButtonRef={searchButtonRef}
+                  onSearch={onSearch}
                   state={state}
                   index={i}
                   key={searched + i}
@@ -102,7 +103,7 @@ export default (SearchList = ({state, fontSize, searchButtonRef}) => {
       )}
     </View>
   ));
-});
+};
 
 const {scrollContainer, noResults} = StyleSheet.create({
   scrollContainer: {

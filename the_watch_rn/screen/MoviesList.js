@@ -21,6 +21,8 @@ export const MoviesList = inject('store')(
     }));
 
     useEffect(() => {
+      // if (state.movie.length > 1) {
+      // }
       store
         .useFetch(route.params.storeProperty, {
           pageNum: state.currentPage,
@@ -35,9 +37,18 @@ export const MoviesList = inject('store')(
         .catch(err => alert(`Opps! Error with fetch ${err}`));
     }, [state, route.params]);
 
+    const _onBack = () => {
+      state.change({
+        movies: [],
+        totalPages: 0,
+        currentPage: 1,
+        fetchedMore: false,
+      });
+    };
+
     return useObserver(() => (
       <Fragment>
-        <Header />
+        <Header callBack={_onBack} />
 
         <View style={{flex: 1, backgroundColor: '#333'}}>
           {state.movies.length < 1 ? (
