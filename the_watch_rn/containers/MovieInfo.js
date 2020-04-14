@@ -9,8 +9,8 @@ import {
   Linking,
   Dimensions,
 } from 'react-native';
-import {inject, useLocalStore, useObserver} from 'mobx-react';
-import {action, toJS} from 'mobx';
+import {inject, observer, useLocalStore, useObserver} from 'mobx-react';
+import {action} from 'mobx';
 import LinearGradient from 'react-native-linear-gradient';
 import Loading from '../components/Loading';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -56,6 +56,7 @@ const MovieInfo = inject('store')(({store, route, fontSize}) => {
     isCantSee: false,
     isFirstRenderDone: false,
     YT_trailer: null,
+    isWatchAble: store.watchMode,
     screenInfo: windowInfo(),
     change: action(obj => {
       for (let key in obj) {
@@ -69,13 +70,6 @@ const MovieInfo = inject('store')(({store, route, fontSize}) => {
       state.change({loading: true});
       fetchForComponent({loading: false});
     }
-
-    // !state.isFirstRenderDone && Dimensions.addEventListener('change', (e) => {
-    //     state.change({
-    //         screenInfo: windowInfo()
-    //     })
-
-    // })
   }, [store.getMovie, route.params, state]);
 
   const fetchForComponent = stateObject => {
@@ -89,7 +83,7 @@ const MovieInfo = inject('store')(({store, route, fontSize}) => {
       .then(data =>
         data.results.length > 0
           ? state.change({YT_trailer: data.results[0].key})
-          : null,
+          : state.change({YT_trailer: null}),
       )
       .catch(err => console.log(err));
   };
@@ -211,7 +205,10 @@ const MovieInfo = inject('store')(({store, route, fontSize}) => {
       <View style={infoContainer}>
         {state.movieInfo && !state.loading && (
           <InfoBlock
+            store={store}
             fontSize={fontSize}
+            isWatchAble={state.isWatchAble}
+            movieId={route.params.movieId}
             movieInfo={{...state.movieInfo, trailer: state.YT_trailer}}
           />
         )}

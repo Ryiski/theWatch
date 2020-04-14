@@ -21,14 +21,14 @@ export default types
     latest: types.string, // `https://api.themoviedb.org/3/movie/latest${apiKey}&language=en-US`
     nowPlaying: types.string, // `https://api.themoviedb.org/3/movie/now_playing${apiKey}&language=en-US&page=1&region=${ip}`
     trending: types.string, // `https://api.themoviedb.org/3/trending/movie/day${apiKey}`
-    // currentRoute: types.optional(types.string, "", [null, undefined])
+    watchMode: types.optional(types.boolean, false),
   })
-  .views(self => ({
+  .views((self) => ({
     useFetch: async (storeProperty, object = {}, fetchOptions = {}) => {
       try {
         const {key} = await fetch(
           'https://us-central1-thewatch-4308d.cloudfunctions.net/api/key',
-        ).then(res => res.json());
+        ).then((res) => res.json());
 
         const url = self[storeProperty];
         const find = ['apiKey', ...Object.keys(object)];
@@ -36,7 +36,7 @@ export default types
 
         const movieDbEndPoint = replaceStr(url, find, replace);
 
-        const response = fetch(movieDbEndPoint, {...fetchOptions}).then(res =>
+        const response = fetch(movieDbEndPoint, {...fetchOptions}).then((res) =>
           res.json(),
         );
 
@@ -46,35 +46,25 @@ export default types
       }
     },
     nowPlaying: async () => {
-      const ip = await fetch(
+      const {ipInfo} = await fetch(
         'https://us-central1-thewatch-4308d.cloudfunctions.net/api/userIp',
-      ).then(res => res.json());
+      ).then((res) => res.json());
       const {key} = await fetch(
         'https://us-central1-thewatch-4308d.cloudfunctions.net/api/key',
-      ).then(res => res.json());
+      ).then((res) => res.json());
       const response = await fetch(
-        `https://api.themoviedb.org/3/movie/now_playing?api_key=${key}&language=en-US&page=1&region=${
-          ip.country
-        }`,
-      ).then(res => res.json());
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=${key}&language=en-US&page=1&region=${ipInfo.country}`,
+      ).then((res) => res.json());
       return response;
     },
-    getTicket: async (movieId, ipAd) => {
-      const ip = ipAd;
-      const ticket = await fetch(
-        `https://videospider.in/getticket.php?key=gddDirmhUmiZiNlE&secret_key=ci460v939w527xyoo3e23rhe5mwah4&video_id=${movieId}&ip=${ip}`,
-      ).then(res => res.text());
-      return ticket;
-    },
-
     getMovie: async (movieId, param = '') => {
       try {
         const {key} = await fetch(
           'https://us-central1-thewatch-4308d.cloudfunctions.net/api/key',
-        ).then(res => res.json());
+        ).then((res) => res.json());
         const data = await fetch(
           `${self.movieBase}${movieId}${param}?api_key=${key}`,
-        ).then(res => res.json());
+        ).then((res) => res.json());
 
         return data;
       } catch (error) {
@@ -84,17 +74,27 @@ export default types
     fetchLatest: async () => {
       const response = await fetch(
         `https://api.themoviedb.org/3/movie/latest${apiKey}&language=en-US`,
-      ).then(res => res.json());
+      ).then((res) => res.json());
       return response;
     },
-
-    getLink: (id, ticket) => {
-      const url = `https://videospider.stream/getvideo?key=gddDirmhUmiZiNlE&video_id=${id}&tmdb=1&ticket=${ticket}`;
-      return url;
+    getMovieLink: async (movieId) => {
+      const {ipInfo} = await fetch(
+        'https://us-central1-thewatch-4308d.cloudfunctions.net/api/userIp',
+      ).then((res) => res.json());
+      // `https://videospider.in/getticket.php?key=0TAW4sVUEq6iGk3f&secret_key=izsm2rimsbpbtof0tzl78l2ntxb8ua&video_id=${movieId}&ip=${ipInfo.ip}`,
+      const ticket = await fetch(
+        `https://vsrequest.video/request.php?key=0TAW4sVUEq6iGk3f&secret_key=izsm2rimsbpbtof0tzl78l2ntxb8ua&video_id=${movieId}&tmdb=1&ip=${ipInfo.ip}`,
+      ).then((res) => res.text());
+      return ticket;
     },
+    // getMovieLink: async (movieId) => {
+    //   const ticket = await self.getTicket(movieId);
+    //   const url = `https://videospider.stream/getvideo?key=0TAW4sVUEq6iGk3f&video_id=${movieId}&tmdb=1&ticket=${ticket}`;
+    //   return url;
+    // },
   }))
-  .actions(self => ({
-    change: obj => {
+  .actions((self) => ({
+    change: (obj) => {
       for (let key in obj) {
         self[key] = obj[key];
       }
