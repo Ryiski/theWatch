@@ -20,14 +20,14 @@ const SideMenu = inject('store')(
   memo(({navigation, store, ...rest}) => {
     const fontsize = RFPercentage(2);
 
-    const [count, setCount] = useState(0);
+    const [clicks, setClicks] = useState(0);
 
-    const setWatchMode = async (store, count, setCount) => {
-      if (count < 5 && store.watchMode === false) {
-        setCount((state) => state + 1);
+    const setWatchMode = async (store, clicks, setCount) => {
+      if (clicks < 5 && store.watchMode === false) {
+        setClicks(state => state + 1);
       }
 
-      if (count === 5 && store.watchMode === false) {
+      if (clicks === 5 && store.watchMode === false) {
         await AsyncStorage.setItem('watchMode', JSON.stringify(true));
         store.change({
           watchMode: true,
@@ -94,7 +94,7 @@ const SideMenu = inject('store')(
             }}>
             <TouchableWithoutFeedback
               onPress={() => {
-                setWatchMode(store, count, setCount);
+                setWatchMode(store, clicks, setCount);
               }}>
               <Image
                 source={require('./assets/images/TMDB.png')}
