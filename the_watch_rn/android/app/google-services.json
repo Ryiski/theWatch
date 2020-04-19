@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "183055357300",
+    "firebase_url": "https://thewatch-4308d.firebaseio.com",
+    "project_id": "thewatch-4308d",
+    "storage_bucket": "thewatch-4308d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183055357300:android:3faaf6e6418ea93c754821",
+        "android_client_info": {
+          "package_name": "com.the_watch_rn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "183055357300-pfod6eoonp1k4098felrinu7aumpihts.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.the_watch_rn",
+            "certificate_hash": "5d9f6aeec1a258054109744f3669406b6d065d8a"
+          }
+        },
+        {
+          "client_id": "183055357300-qfhrm17qdtbq2r9vv634aun7q2ev2cml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpvhM8lq2Ah43xNUdK5_8Ta9-gjywpYW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "183055357300-qfhrm17qdtbq2r9vv634aun7q2ev2cml.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

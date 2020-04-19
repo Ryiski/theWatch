@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import IconFa from 'react-native-vector-icons/FontAwesome';
 import IconMc from 'react-native-vector-icons/MaterialCommunityIcons';
 import {MovieCard} from '../components/HomeMovieList';
+import Loading from '../components/Loading';
 const ViewportAware = Viewport.Aware(View);
 
 export const Home = inject('store')(({store, navigation}) => {
@@ -85,6 +86,12 @@ export const Home = inject('store')(({store, navigation}) => {
                   ? 600
                   : sliderSize.height,
             }}>
+            <LinearGradient
+              style={{flex: 1, zIndex: 0, ...absolute}}
+              colors={gradientColors}>
+              <Loading size={100} />
+            </LinearGradient>
+
             <FlatList
               style={{zIndex: 6}}
               data={trending}

@@ -10,6 +10,7 @@ const replaceStr = (url, find, replace) => {
 
 export default types
   .model({
+    authUser: types.frozen({}, null),
     movieBase: types.string, // `https://api.themoviedb.org/3/movie/${param[/videos,/credits,/reviews,/similar]}?api_key=${apiKey}`
     //movieBase2: types.string, // `https://api.themoviedb.org/3/movie/${param[/videos,/credits,/reviews,/similar]}?api_key=${apiKey}`
     searchMovie: types.string, //`https://api.themoviedb.org/3/search/movie/?api_key=${apiKey}&query=${movieName}&page=${pageNum}`
@@ -23,12 +24,12 @@ export default types
     trending: types.string, // `https://api.themoviedb.org/3/trending/movie/day${apiKey}`
     watchMode: types.optional(types.boolean, false),
   })
-  .views((self) => ({
+  .views(self => ({
     useFetch: async (storeProperty, object = {}, fetchOptions = {}) => {
       try {
         const {key} = await fetch(
           'https://us-central1-thewatch-4308d.cloudfunctions.net/api/key',
-        ).then((res) => res.json());
+        ).then(res => res.json());
 
         const url = self[storeProperty];
         const find = ['apiKey', ...Object.keys(object)];
@@ -36,7 +37,7 @@ export default types
 
         const movieDbEndPoint = replaceStr(url, find, replace);
 
-        const response = fetch(movieDbEndPoint, {...fetchOptions}).then((res) =>
+        const response = fetch(movieDbEndPoint, {...fetchOptions}).then(res =>
           res.json(),
         );
 
@@ -48,23 +49,25 @@ export default types
     nowPlaying: async () => {
       const {ipInfo} = await fetch(
         'https://us-central1-thewatch-4308d.cloudfunctions.net/api/userIp',
-      ).then((res) => res.json());
+      ).then(res => res.json());
       const {key} = await fetch(
         'https://us-central1-thewatch-4308d.cloudfunctions.net/api/key',
-      ).then((res) => res.json());
+      ).then(res => res.json());
       const response = await fetch(
-        `https://api.themoviedb.org/3/movie/now_playing?api_key=${key}&language=en-US&page=1&region=${ipInfo.country}`,
-      ).then((res) => res.json());
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=${key}&language=en-US&page=1&region=${
+          ipInfo.country
+        }`,
+      ).then(res => res.json());
       return response;
     },
     getMovie: async (movieId, param = '') => {
       try {
         const {key} = await fetch(
           'https://us-central1-thewatch-4308d.cloudfunctions.net/api/key',
-        ).then((res) => res.json());
+        ).then(res => res.json());
         const data = await fetch(
           `${self.movieBase}${movieId}${param}?api_key=${key}`,
-        ).then((res) => res.json());
+        ).then(res => res.json());
 
         return data;
       } catch (error) {
@@ -74,17 +77,19 @@ export default types
     fetchLatest: async () => {
       const response = await fetch(
         `https://api.themoviedb.org/3/movie/latest${apiKey}&language=en-US`,
-      ).then((res) => res.json());
+      ).then(res => res.json());
       return response;
     },
-    getMovieLink: async (movieId) => {
+    getMovieLink: async movieId => {
       const {ipInfo} = await fetch(
         'https://us-central1-thewatch-4308d.cloudfunctions.net/api/userIp',
-      ).then((res) => res.json());
+      ).then(res => res.json());
       // `https://videospider.in/getticket.php?key=0TAW4sVUEq6iGk3f&secret_key=izsm2rimsbpbtof0tzl78l2ntxb8ua&video_id=${movieId}&ip=${ipInfo.ip}`,
       const ticket = await fetch(
-        `https://vsrequest.video/request.php?key=0TAW4sVUEq6iGk3f&secret_key=izsm2rimsbpbtof0tzl78l2ntxb8ua&video_id=${movieId}&tmdb=1&ip=${ipInfo.ip}`,
-      ).then((res) => res.text());
+        `https://vsrequest.video/request.php?key=0TAW4sVUEq6iGk3f&secret_key=izsm2rimsbpbtof0tzl78l2ntxb8ua&video_id=${movieId}&tmdb=1&ip=${
+          ipInfo.ip
+        }`,
+      ).then(res => res.text());
       return ticket;
     },
     // getMovieLink: async (movieId) => {
@@ -93,10 +98,26 @@ export default types
     //   return url;
     // },
   }))
-  .actions((self) => ({
-    change: (obj) => {
+  .actions(self => ({
+    change: obj => {
       for (let key in obj) {
         self[key] = obj[key];
       }
     },
   }));
+
+`
+  I will design an integrated site from scratch using the latest technologies available for web programming such as HTML CSS JavaScript and NodeJS
+
+# Features: The
+
+five dollars include designing the home page of the site
+
+I will design sites that work on all screens with famous technologies such as HTML5 CSS3 and Bootstrap4
+
+I will use modern databases such as MonogDB to deal with the site and that will include protection from various vulnerabilities that PHP language and Mysql databases suffer from. The
+
+design will be from scratch according to your desire and templates like WordPress will not be used.
+
+Note: The service does not include domain or hos
+  `;
